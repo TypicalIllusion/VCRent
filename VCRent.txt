@@ -1,0 +1,49 @@
+client.on("voiceStateUpdate", (oldMember, newMember) => {
+    if (newMember.channelID == "777537242960363570") {
+        const lobby = newMember.channel;
+        const name = ["Prison", "Jail", "Gulag", "Basement"];
+        const finalname = name[Math.floor(Math.random() * 8)] + " " + newMember.member.displayName;
+        finalnamelist.push(finalname);
+        lobby.overwritePermissions([
+            {
+                type: "member",
+                id: newMember.id,
+                deny: ['CONNECT'],
+            },
+        ]);
+        newMember.guild.channels.create(finalname, {
+            type: 'voice',
+            userLimit: "1",
+            bitrate: "96000",
+        }).catch(e => console.error(e)).then(channel=>{
+            channel.setParent("770113124493688862");
+            newMember.setChannel(channel);
+            channel.overwritePermissions([
+                {
+                    type: "member",
+                    id: newMember.id,
+                    allow: ['CONNECT', "MANAGE_CHANNELS", "MANAGE_ROLES"],
+                },
+                {
+                    type: "role",
+                    id: newMember.guild.roles.everyone,
+                    deny: ['CONNECT'],
+                },
+            ]);
+            voicechannelsid.push(channel.id);
+        });
+    }
+    else if (voicechannelsid.includes(oldMember.channelID)) {
+        const lobby = newMember.guild.channels.cache.get("777537242960363570");
+        try {
+            if(!oldMember.channel.members.size > 0) {
+                oldMember.channel.delete("F");
+                voicechannelsid = voicechannelsid.filter(item => item !== oldMember.channelID);
+                lobby.permissionOverwrites.get(oldMember.id).delete();
+            }
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+});
