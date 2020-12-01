@@ -1,3 +1,5 @@
+const finalnamelist = [];
+let voicechannelsid = [];
 client.on("voiceStateUpdate", (oldMember, newMember) => {
     if (newMember.channelID == "777537242960363570") { // channel CHANGE THIS
         const lobby = newMember.channel;
