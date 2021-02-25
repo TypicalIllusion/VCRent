@@ -1,3 +1,4 @@
+# Code by @Jesus-QC
 const finalnamelist = [];
 let voicechannelsid = [];
 client.on("voiceStateUpdate", (oldMember, newMember) => {
